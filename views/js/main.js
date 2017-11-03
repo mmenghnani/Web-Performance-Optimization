@@ -519,6 +519,8 @@ function updatePositions() {
   }
 }
 
+
+
 // runs updatePositions on scroll
 window.addEventListener('scroll', updatePositions);
 
@@ -526,7 +528,7 @@ window.addEventListener('scroll', updatePositions);
 document.addEventListener('DOMContentLoaded', function() {
   var cols = 8;
   var s = 256;
-  for (var i = 0; i < 200; i++) {
+  for (var i = 0; i < 35; i++) { //decreasing the number of pizzas
     var elem = document.createElement('img');
     elem.className = 'mover';
     elem.src = "images/pizza.png";
