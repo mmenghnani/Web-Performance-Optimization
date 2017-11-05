@@ -447,12 +447,16 @@ var resizePizzas = function(size) {
     return dx;
   }
 
+    // We dont need to use querySelectorAll so many times
+    var dx = determineDx(document.getElementById("pizza0"), size);
+    var newwidth = (document.getElementById("pizza0").offsetWidth + dx) + 'px';
+
   // Iterates through pizza elements on the page and changes their widths
   function changePizzaSizes(size) {
     for (var i = 0; i < document.querySelectorAll(".randomPizzaContainer").length; i++) {
-      var dx = determineDx(document.querySelectorAll(".randomPizzaContainer")[i], size);
-      var newwidth = (document.querySelectorAll(".randomPizzaContainer")[i].offsetWidth + dx) + 'px';
-      document.querySelectorAll(".randomPizzaContainer")[i].style.width = newwidth;
+       //var dx = determineDx(document.querySelectorAll(".randomPizzaContainer")[i], size); //Removing and adding getElementById above.
+       // var newwidth = (document.querySelectorAll(".randomPizzaContainer")[i].offsetWidth + dx) + 'px';
+       document.querySelectorAll(".randomPizzaContainer")[i].style.width = newwidth;
     }
   }
 
@@ -501,12 +505,19 @@ function updatePositions() {
   frame++;
   window.performance.mark("mark_start_frame");
 
-  var items = document.querySelectorAll('.mover');
+  //var items = document.querySelectorAll('.mover');
+    var items = document.getElementsByClassName('mover');  //This is a better way to call the DOM
+    var scrollTop = document.documentElement.scrollTop || document.body.scrollTop; // this can be calculated outside the for loop
+    var scrollTopNew = scrollTop / 1250; //took the calculation of scrollTop outside.
+
   for (var i = 0; i < items.length; i++) {
     // document.body.scrollTop is no longer supported in Chrome.
-    var scrollTop = document.documentElement.scrollTop || document.body.scrollTop;
-    var phase = Math.sin((scrollTop / 1250) + (i % 5));
-    items[i].style.left = items[i].basicLeft + 100 * phase + 'px';
+    var phase = Math.sin((scrollTopNew) + (i % 5)); //change i%5
+   // console.log(phase);
+   items[i].style.left = items[i].basicLeft + 100 * phase + 'px'; // CSS3 . hardware acceleration and transformations
+    //transform:translateX(); instead of style.left
+    //is there a way to only print the changing pieces and not the whole screen on the scroll.
+     //how to make all the pizzas come into different layers. backface visibility : hidden
   }
 
   // User Timing API to the rescue again. Seriously, it's worth learning.
@@ -519,8 +530,6 @@ function updatePositions() {
   }
 }
 
-
-
 // runs updatePositions on scroll
 window.addEventListener('scroll', updatePositions);
 
@@ -528,7 +537,8 @@ window.addEventListener('scroll', updatePositions);
 document.addEventListener('DOMContentLoaded', function() {
   var cols = 8;
   var s = 256;
-  for (var i = 0; i < 35; i++) { //decreasing the number of pizzas
+  //Need to decrease the number of iterations. don't need to go till 200.
+  for (var i = 0; i < 200; i++) {
     var elem = document.createElement('img');
     elem.className = 'mover';
     elem.src = "images/pizza.png";
