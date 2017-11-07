@@ -401,7 +401,6 @@ var pizzaElementGenerator = function(i) {
 // resizePizzas(size) is called when the slider in the "Our Pizzas" section of the website moves.
 var resizePizzas = function(size) {
   window.performance.mark("mark_start_resize");   // User Timing API function
-
   // Changes the value for the size of the pizza above the slider
   function changeSliderLabel(size) {
     switch(size) {
@@ -418,7 +417,6 @@ var resizePizzas = function(size) {
         console.log("bug in changeSliderLabel");
     }
   }
-
   changeSliderLabel(size);
 
    // Returns the size difference to change a pizza element from one size to another. Called by changePizzaSlices(size).
@@ -447,18 +445,22 @@ var resizePizzas = function(size) {
     return dx;
   }
 
-    // We dont need to use querySelectorAll so many times
-    var dx = determineDx(document.getElementById("pizza0"), size);
-    var newwidth = (document.getElementById("pizza0").offsetWidth + dx) + 'px';
 
   // Iterates through pizza elements on the page and changes their widths
   function changePizzaSizes(size) {
-    for (var i = 0; i < document.querySelectorAll(".randomPizzaContainer").length; i++) {
+
+    // We don't need to declare dx and newwidth with querySelectorAll everytime the loop is run. Bringing both the variables out of the loop
+        var dx = determineDx(document.getElementById("pizza0"), size);
+        var newwidth = (document.getElementById("pizza0").offsetWidth + dx) + 'px';
+
        //var dx = determineDx(document.querySelectorAll(".randomPizzaContainer")[i], size); //Removing and adding getElementById above.
        // var newwidth = (document.querySelectorAll(".randomPizzaContainer")[i].offsetWidth + dx) + 'px';
-       document.querySelectorAll(".randomPizzaContainer")[i].style.width = newwidth;
-    }
-  }
+
+          var randomPizzaContainer = document.querySelectorAll(".randomPizzaContainer");
+          for (var i = 0; i < randomPizzaContainer.length; i++) {
+              randomPizzaContainer[i].style.width = newwidth;
+          }
+      }
 
   changePizzaSizes(size);
 
@@ -494,7 +496,7 @@ function logAverageFrame(times) {   // times is the array of User Timing measure
   for (var i = numberOfEntries - 1; i > numberOfEntries - 11; i--) {
     sum = sum + times[i].duration;
   }
-  console.log("Average scripting time to generate last 10 frames: " + sum / 10 + "ms");
+  //console.log("Average scripting time to generate last 10 frames: " + sum / 10 + "ms");
 }
 
 // The following code for sliding background pizzas was pulled from Ilya's demo found at:
@@ -510,15 +512,18 @@ function updatePositions() {
     var scrollTop = document.documentElement.scrollTop || document.body.scrollTop; // this can be calculated outside the for loop
     var scrollTopNew = scrollTop / 1250; //took the calculation of scrollTop outside.
 
-  for (var i = 0; i < items.length; i++) {
-    // document.body.scrollTop is no longer supported in Chrome.
-    var phase = Math.sin((scrollTopNew) + (i % 5)); //change i%5
-   // console.log(phase);
-   items[i].style.left = items[i].basicLeft + 100 * phase + 'px'; // CSS3 . hardware acceleration and transformations
-    //transform:translateX(); instead of style.left
+    var randPhaseValue = new Map();
+
+    for (var j = 0; j < 5; j++) {
+            randPhaseValue.set(j, Math.sin(scrollTopNew + (j % 5)));
+        }
+
+        for (var i = 0; i < items.length; i++) {
+            var phase = randPhaseValue.get(i % 5);
+            items[i].style.left = items[i].basicLeft + 100 * phase + 'px'; // CSS3 . hardware acceleration and transformations
     //is there a way to only print the changing pieces and not the whole screen on the scroll.
-     //how to make all the pizzas come into different layers. backface visibility : hidden
-  }
+    //how to make all the pizzas come into different layers. backface visibility : hidden
+        }
 
   // User Timing API to the rescue again. Seriously, it's worth learning.
   // Super easy to create custom metrics.
@@ -530,6 +535,7 @@ function updatePositions() {
   }
 }
 
+
 // runs updatePositions on scroll
 window.addEventListener('scroll', updatePositions);
 
@@ -537,16 +543,17 @@ window.addEventListener('scroll', updatePositions);
 document.addEventListener('DOMContentLoaded', function() {
   var cols = 8;
   var s = 256;
-  //Need to decrease the number of iterations. don't need to go till 200.
-  for (var i = 0; i < 200; i++) {
-    var elem = document.createElement('img');
-    elem.className = 'mover';
-    elem.src = "images/pizza.png";
-    elem.style.height = "100px";
-    elem.style.width = "73.333px";
-    elem.basicLeft = (i % cols) * s;
-    elem.style.top = (Math.floor(i / cols) * s) + 'px';
-    document.querySelector("#movingPizzas1").appendChild(elem);
+
+  //Decreased the number of iterations. don't need to go till 200.
+    for (var i = 0; i <100; i++) {
+        var elem = document.createElement('img');
+        elem.className = 'mover';
+        elem.src = "images/pizza.png";
+        elem.style.height = "100px";
+        elem.style.width = "73.333px";
+        elem.basicLeft = (i % cols) * s;
+        elem.style.top = (Math.floor(i / cols) * s) + 'px';
+        document.querySelector("#movingPizzas1").appendChild(elem);
   }
-  updatePositions();
+    updatePositions();
 });
