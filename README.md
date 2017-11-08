@@ -15,6 +15,12 @@ To get started, check out the repository and inspect the code.
 5) Moved the font link below the footer
 6) Compressed the profile pic and the pizzeria pic
 
+Pagespeed Insights Scores
+1) index.html - Mobile(90),Desktop(90)
+2) project-2048.html - Mobile(95),Desktop(97)
+3) project-mobile.html - Mobile(95),Desktop(97)
+4) project-webperf.html - Mobile(96),Desktop(97)
+
 
 #### Part 2: Optimize Frames per Second in pizza.html
 
@@ -28,9 +34,7 @@ Main.js changes
 3) Decreased the number of iterations for the loop generating sliding pizza from 200 to 100.
 
 HTML changes
-1) Inlined the style.css for pizza.html to unblock critical rendering path
-
-Desktop and Mobile Score for Index.html
+1) Inlined the style.css for pizza.html
 
 Image for time to resize pizza
 ![image](https://user-images.githubusercontent.com/11216561/32531010-660e6d5c-c3f6-11e7-9b33-67a3b15cb4b9.png)
