@@ -36,7 +36,7 @@ Main.js changes
 HTML changes
 1) Inlined the style.css for pizza.html
 
-Image for time to resize pizza
+Time to resize pizza
 ![image](https://user-images.githubusercontent.com/11216561/32531010-660e6d5c-c3f6-11e7-9b33-67a3b15cb4b9.png)
 
 
