@@ -46,5 +46,16 @@ Time to resize pizza
 
 
 
+Time to generate last 10 frames
+
+
+
+
+
+![image](https://user-images.githubusercontent.com/11216561/32531750-908d6926-c3fa-11e7-9f87-7fe918e522e6.png)
+
+
+
+
 
 
